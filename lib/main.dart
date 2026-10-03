@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'dojo.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -73,14 +74,20 @@ class Training extends StatelessWidget {
   }
 }
 
-class Dojo extends StatelessWidget {
-  const Dojo({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Dojo', style: TextStyle(fontSize: 24)));
-  }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -123,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Home(),
             Diet(),
             Training(),
-            Dojo(),
+            Dojo(a:1),
             Settings(),
           ],
         ),
