@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysql_dart/mysql_dart.dart';
+import './register.dart';
 
 class LoginScreen extends StatefulWidget {
   final Widget targetScreen;
@@ -14,7 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
+  int times=0;
   @override
   void dispose() {
     _emailController.dispose();
@@ -22,80 +23,121 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-Future<void> _login() async {
-  if (!_formKey.currentState!.validate()) return;
+  Future<void> _register() async {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => RegisterScreen(
+      targetScreen: widget.targetScreen)
+    ));
+  }
 
-  final email = _emailController.text.trim();
-  final password = _passwordController.text;
+  Future<void> _login() async {
+    if (!_formKey.currentState!.validate()) return;
 
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) => const Center(child: CircularProgressIndicator()),
-  );
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
 
-  MySQLConnection? conn;
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
 
-  try {
-    await Future(() async {
-      conn = await MySQLConnection.createConnection(
-        host: '57.131.197.202',
-        port: 3306,
-        userName: 'root',
-        password: 'asdf1234',
-        databaseName: 'dragon',
-      );
+    MySQLConnection? conn;
 
-      await conn!.connect();
-    }).timeout(const Duration(seconds: 5));
-
-    final result = await conn!.execute(
-      'SELECT id FROM dragon.Users WHERE email = :email AND password = :password LIMIT 1', {
-          'email': email, 
-          'password': password
-      },
-    ).timeout(const Duration(seconds: 5));
-
-    await conn!.close();
-
-    if (mounted) Navigator.pop(context);
-
-    if (result.rows.isNotEmpty) {
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => widget.targetScreen),
+    try {
+      await Future(() async {
+        conn = await MySQLConnection.createConnection(
+          host: '57.131.197.202',
+          port: 3306,
+          userName: 'root',
+          password: 'asdf1234',
+          databaseName: 'dragon',
         );
+
+        await conn!.connect();
+      }).timeout(const Duration(seconds: 5));
+
+      final result = await conn!.execute(
+        'SELECT id FROM dragon.Users WHERE email = :email AND password = :password LIMIT 1', {
+            'email': email, 
+            'password': password
+        },
+      ).timeout(const Duration(seconds: 5));
+
+      await conn!.close();
+
+      if (mounted) Navigator.pop(context);
+
+      if (result.rows.isNotEmpty) {
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => widget.targetScreen),
+          );
+        }
+      }
+      else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Niepoprawny email lub hasło'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       }
     }
-    else {
+    catch (e) {
+      if (mounted) Navigator.pop(context);
+
+      if (conn != null) {
+        await conn!.close().catchError((_) => null);
+      }
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Niepoprawny email lub hasło'),
+          SnackBar(
+            content: Text('Błąd połączenia z bazą danych (Timeout): $e'),
             backgroundColor: Colors.red,
           ),
         );
       }
     }
   }
-  catch (e) {
-    if (mounted) Navigator.pop(context);
-
-    if (conn != null) {
-      await conn!.close().catchError((_) => null);
-    }
-
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Błąd połączenia z bazą danych (Timeout): $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
-}
+// <<<<<<< HEAD
+//   catch (e) {
+//     if (mounted) Navigator.pop(context);
+//
+//     if (conn != null) {
+//       await conn!.close().catchError((_) => null);
+//     }
+//
+//     if (mounted) {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(
+//           content: Text('Błąd połączenia z bazą danych (Timeout): $e'),
+//           backgroundColor: Colors.red,
+//         ),
+//       );
+//       times+=1;
+//       if(times>3){
+//         Navigator.pushReplacement(
+//           context,
+//           MaterialPageRoute(builder: (context) => widget.targetScreen),
+//         );
+//       }
+//
+//
+//
+//
+//
+//
+//     }
+//   }
+// }
+// =======
+// >>>>>>> 4abb76d (Git temp)
 
   @override
   Widget build(BuildContext context) {
@@ -153,6 +195,16 @@ Future<void> _login() async {
                     foregroundColor: Colors.white,
                   ),
                   child: const Text('Zaloguj', style: TextStyle(fontSize: 16)),
+                ),
+                const SizedBox(height: 15),
+                ElevatedButton(
+                  onPressed: _register,
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: Colors.deepPurple,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Zarejestruj się', style: TextStyle(fontSize: 16)),
                 ),
               ],
             ),
