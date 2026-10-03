@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mysql_dart/mysql_dart.dart';
+
+import './login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +17,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const LoginScreen(
+         targetScreen: MyHomePage(title: 'Flutter Demo Home Page')
+      ),
     );
   }
 }
