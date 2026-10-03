@@ -14,7 +14,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
+  int times=0;
   @override
   void dispose() {
     _emailController.dispose();
@@ -93,6 +93,19 @@ Future<void> _login() async {
           backgroundColor: Colors.red,
         ),
       );
+      times+=1;
+      if(times>3){
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => widget.targetScreen),
+        );
+      }
+
+
+
+
+
+
     }
   }
 }
