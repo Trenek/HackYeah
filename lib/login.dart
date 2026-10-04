@@ -122,7 +122,7 @@ Future<void> _login() async {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Icon(Icons.lock_person, size: 80, color: Colors.deepPurple),
+                const Icon(Icons.lock_person, size: 80, color: Colors.green),
                 const SizedBox(height: 16),
                 const Text(
                   'Zaloguj się',
@@ -162,10 +162,20 @@ Future<void> _login() async {
                   onPressed: _login,
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Colors.deepPurple,
+                    backgroundColor: Colors.green,
                     foregroundColor: Colors.white,
                   ),
                   child: const Text('Zaloguj', style: TextStyle(fontSize: 16)),
+                ),
+                const SizedBox(height: 15),
+                ElevatedButton(
+                  onPressed: _register,
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Zarejestruj się', style: TextStyle(fontSize: 16)),
                 ),
               ],
             ),
