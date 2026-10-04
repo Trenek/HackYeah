@@ -8,7 +8,6 @@ class Dojo extends StatefulWidget {
   final int a;
  @override
   State<Dojo> createState() => _DojoState();
-
 }
 
 class _DojoState extends State<Dojo> with SingleTickerProviderStateMixin {
@@ -76,5 +75,3 @@ class _DojoState extends State<Dojo> with SingleTickerProviderStateMixin {
     );
   }
 }
-
-
