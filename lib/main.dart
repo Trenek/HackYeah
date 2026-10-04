@@ -79,21 +79,6 @@ class Training extends StatelessWidget {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class Settings extends StatelessWidget {
   const Settings({super.key});
 
@@ -104,14 +89,6 @@ class Settings extends StatelessWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // int _counter = 0;
-  //
-  // void _incrementCounter() {
-  //   setState(() {
-  //     _counter += 2;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -139,11 +116,6 @@ class _MyHomePageState extends State<MyHomePage> {
             Settings(),
           ],
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: _incrementCounter,
-        //   tooltip: 'Increment',
-        //   child: const Icon(Icons.add),
-        // ),
       )
     );
   }
