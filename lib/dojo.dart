@@ -21,57 +21,23 @@ class _DojoState() extends State<Dojo>{
 }
 */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Object make_cube(String path,Vector3 sca,Vector3 pos){
+  Object o=Object(fileName:'assets/cube.obj', scale: sca,position: pos,backfaceCulling: false);
+  loadObj('assets/cube.obj',false).then((List<Mesh> meshes){
+    o.mesh=meshes[0];
+    loadImageFromAsset(path).then((im){
+    o.mesh.texture=im;
+    });
+  });
+  return o;
+}
 
 
 class _DojoState extends State<Dojo> with SingleTickerProviderStateMixin {
   late Scene _scene;
   Object? _cube;
   Object? _dragon_plane;
+  Object? _prop;
   late AnimationController _controller;
 
   void _onSceneCreated(Scene scene) {
@@ -79,8 +45,24 @@ class _DojoState extends State<Dojo> with SingleTickerProviderStateMixin {
     scene.camera.position.z = 50;
     scene.camera.fov=75;
     _cube = Object(scale: Vector3(2.0, 2.0, 2.0), backfaceCulling: false);
-    _dragon_plane = Object(scale: Vector3(16.0, 16.0, 0.01),fileName: 'assets/cube.obj');
+    _dragon_plane = Object(fileName:"assets/cube.obj", scale: Vector3(8.0, 8.0, 0.5), backfaceCulling: false);
+    _prop = Object(fileName:"assets/w.obj", scale: Vector3(1.0, 1.0, 1.0),
+    position: Vector3(8, 0, 0), backfaceCulling: false);
 
+    //final Object leave=Object(fileName:"assets/mine_tex/cube_g.obj", scale: Vector3(1.0, 1.0, 1.0), backfaceCulling: false);
+    
+    //make_cube('assets/superhappy dragon.png',Vector3(16.0, 16.0, 0.0001),Vector3(0,0,0));
+    for (var x = -5; x < 5; x++) {
+      
+      //final Object leave= Object(fileName:"assets/mine_tex/cube_g.obj", scale: Vector3(8.0, 8.0, 0.01), backfaceCulling: false);
+      
+      //make_cube('assets/mine_tex/cube_g.obj/wool_orange.png',Vector3(1.0, 1.0, 1.0),Vector3(x.toDouble(),8,0));
+      //_cube!.add(leave);
+    }
+
+    
+    
+    //_prop = Object(fileName: 'assets/3d/Sztanga.obj');
     final int samples = 100;
     final double radius = 8;
     final double offset = 2 / samples;
@@ -95,14 +77,17 @@ class _DojoState extends State<Dojo> with SingleTickerProviderStateMixin {
       final Object cube = Object(
         position: Vector3(x, y, z)..scale(radius),
         scale: Vector3(0.3, 0.3, 0.3),
-        fileName: 'assets/cube/cube.obj',
+        fileName: 'assets/cube/cube2.obj'
+        //fileName: 'assets/cube.obj'
       );
-      _cube!.add(cube);
       */
+      //_cube!.add(cube);
+      
     }
+    //_cube!.rotation.x=180;
     scene.world.add(_cube!);
-    _cube!.rotation.x=180;
      scene.world.add(_dragon_plane!);
+     scene.world.add(_prop!);
   }
 
   @override
@@ -115,8 +100,8 @@ class _DojoState extends State<Dojo> with SingleTickerProviderStateMixin {
           _cube!.updateTransform();
           _scene.update();
         }
-        _dragon_plane!.rotation.x = _controller.value * 360;
-        _dragon_plane!.updateTransform();
+       // _dragon_plane!.position.y = sin(_controller.value);
+       // _dragon_plane!.updateTransform();
       })
       ..repeat();
   }
