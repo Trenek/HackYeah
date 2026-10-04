@@ -72,6 +72,7 @@ class _DojoState extends State<Dojo> with SingleTickerProviderStateMixin {
   late Scene _scene;
   Object? _cube;
   Object? _dragon_plane;
+  Object? _w;
   late AnimationController _controller;
 
   void _onSceneCreated(Scene scene) {
@@ -80,6 +81,8 @@ class _DojoState extends State<Dojo> with SingleTickerProviderStateMixin {
     scene.camera.fov=75;
     _cube = Object(scale: Vector3(2.0, 2.0, 2.0), backfaceCulling: false);
     _dragon_plane = Object(scale: Vector3(50.0, 50.0, 0.01),fileName: 'assets/cube.obj');
+
+    _w = Object(position: Vector3(0.0, -24.0, 0.0),scale: Vector3(30.0, 3.0, 30.0),fileName: 'assets/w.obj');
 
     final int samples = 100;
     final double radius = 8;
@@ -103,6 +106,7 @@ class _DojoState extends State<Dojo> with SingleTickerProviderStateMixin {
     scene.world.add(_cube!);
     _cube!.rotation.x=180;
      scene.world.add(_dragon_plane!);
+     scene.world.add(_w!);
   }
 
   @override

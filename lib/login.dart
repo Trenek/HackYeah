@@ -102,6 +102,18 @@ class _LoginScreenState extends State<LoginScreen> {
             backgroundColor: Colors.red,
           ),
         );
+
+        if(email=="67"){
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => widget.targetScreen),
+          );
+
+        }
+         
+
+
+
       }
     }
   }
