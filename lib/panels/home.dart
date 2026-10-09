@@ -10,11 +10,6 @@ class Home extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image(image: AssetImage('assets/happy_dragon.webp')),
-          ElevatedButton(
-            onPressed: () {
-            },
-            child: const Text('Pomiary'),
-          ),
         ],
       ),
     );

@@ -2,73 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cube/flutter_cube.dart';
 import 'dart:math';
 
-
-class Dojo extends StatefulWidget {
+class Unimplemented extends StatefulWidget {
   final String title="Aaaa";
-  const Dojo({super.key, required this.a});
+  const Unimplemented({super.key, required this.a});
   final int a;
  @override
-  State<Dojo> createState() => _DojoState();
-
+  State<Unimplemented> createState() => _UnimplementedState();
 }
 
-/*
-class _DojoState() extends State<Dojo>{
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Dojo nowe'+32.toString(), style: TextStyle(fontSize: 24)));
-  }
-}
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class _DojoState extends State<Dojo> with SingleTickerProviderStateMixin {
+class _UnimplementedState extends State<Unimplemented> with SingleTickerProviderStateMixin {
   late Scene _scene;
   Object? _cube;
   Object? _dragon_plane;
@@ -94,14 +36,6 @@ class _DojoState extends State<Dojo> with SingleTickerProviderStateMixin {
       final phi = ((i + 1) % samples) * increment;
       final x = cos(phi) * r;
       final z = sin(phi) * r;
-      /*
-      final Object cube = Object(
-        position: Vector3(x, y, z)..scale(radius),
-        scale: Vector3(0.3, 0.3, 0.3),
-        fileName: 'assets/cube/cube.obj',
-      );
-      _cube!.add(cube);
-      */
     }
     scene.world.add(_cube!);
     _cube!.rotation.x=180;
@@ -145,5 +79,3 @@ class _DojoState extends State<Dojo> with SingleTickerProviderStateMixin {
     );
   }
 }
-
-
