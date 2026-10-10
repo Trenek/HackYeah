@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import './login.dart';
 
-import './panels/dojo.dart';
+import './panels/unimplemented.dart';
 import './panels/home.dart';
 
 void main() {

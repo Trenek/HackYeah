@@ -57,7 +57,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     MaterialPageRoute(builder: (context) => widget.targetScreen),
                 );
             } else {
-                _showErrorSnackBar('Niepoprawny email lub hasło (Kod błędu: ${response.statusCode})');
+                final message = jsonDecode(response.body)['message'];
+
+                _showErrorSnackBar('$message (Kod błędu: ${response.statusCode})');
             }
         } catch (e) {
             if (!mounted) return;
