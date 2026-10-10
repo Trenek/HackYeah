@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import './register.dart';
 
 class LoginScreen extends StatefulWidget {
-    final Widget targetScreen;
+    final Widget Function(int userID, String userName) targetScreen;
 
     const LoginScreen({super.key, required this.targetScreen});
 
@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Future<void> _register() async {
         Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => RegisterScreen(
+            MaterialPageRoute(builder: (_) => RegisterScreen(
                 targetScreen: widget.targetScreen)
             )
         );
@@ -52,16 +52,21 @@ class _LoginScreenState extends State<LoginScreen> {
             if (!mounted) return;
 
             if (response.statusCode == 200) {
+                final id = jsonDecode(response.body)['id'];
+                final name = jsonDecode(response.body)['name'];
+
                 Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => widget.targetScreen),
+                    MaterialPageRoute(builder: (_) => widget.targetScreen(id, name)),
                 );
-            } else {
+            } 
+            else {
                 final message = jsonDecode(response.body)['message'];
 
                 _showErrorSnackBar('$message (Kod błędu: ${response.statusCode})');
             }
-        } catch (e) {
+        }
+        catch (e) {
             if (!mounted) return;
             _showErrorSnackBar('Błąd połączenia z serwerem');
         }

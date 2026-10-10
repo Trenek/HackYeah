@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import './login.dart';
 
 class RegisterScreen extends StatefulWidget {
-    final Widget targetScreen;
+    final Widget Function(int id, String name) targetScreen;
 
     const RegisterScreen({super.key, required this.targetScreen});
 
