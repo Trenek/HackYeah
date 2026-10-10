@@ -1,81 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cube/flutter_cube.dart';
-import 'dart:math';
 
 class Unimplemented extends StatefulWidget {
-  final String title="Aaaa";
-  const Unimplemented({super.key, required this.a});
-  final int a;
- @override
-  State<Unimplemented> createState() => _UnimplementedState();
+    final String title = "Dragon is Unresponsive";
+    final int a;
+
+    const Unimplemented({super.key, required this.a});
+
+    @override
+    State<Unimplemented> createState() => _UnimplementedState();
 }
 
 class _UnimplementedState extends State<Unimplemented> with SingleTickerProviderStateMixin {
-  late Scene _scene;
-  Object? _cube;
-  Object? _dragon_plane;
-  Object? _w;
-  late AnimationController _controller;
+    late Scene scene;
+    late AnimationController controller;
+    Object? cube;
+    Object? dragonPlane;
+    Object? w;
 
-  void _onSceneCreated(Scene scene) {
-    _scene = scene;
-    scene.camera.position.z = 50;
-    scene.camera.fov=75;
-    _cube = Object(scale: Vector3(2.0, 2.0, 2.0), backfaceCulling: false);
-    _dragon_plane = Object(scale: Vector3(50.0, 50.0, 0.01),fileName: 'assets/cube.obj');
+    void _onSceneCreated(Scene scene) {
+        this.scene = scene;
+        scene.camera.position.z = 50;
+        scene.camera.fov=75;
+        cube = Object(scale: Vector3(2.0, 2.0, 2.0), backfaceCulling: false);
+        dragonPlane = Object(scale: Vector3(50.0, 50.0, 0.01),fileName: 'assets/cube.obj');
 
-    _w = Object(position: Vector3(0.0, -24.0, 0.0),scale: Vector3(30.0, 3.0, 30.0),fileName: 'assets/w.obj');
+        w = Object(position: Vector3(0.0, -24.0, 0.0),scale: Vector3(30.0, 3.0, 30.0),fileName: 'assets/w.obj');
 
-    final int samples = 100;
-    final double radius = 8;
-    final double offset = 2 / samples;
-    final double increment = pi * (3 - sqrt(5));
-    for (var i = 0; i < samples; i++) {
-      final y = (i * offset - 1) + offset / 2;
-      final r = sqrt(1 - pow(y, 2));
-      final phi = ((i + 1) % samples) * increment;
-      final x = cos(phi) * r;
-      final z = sin(phi) * r;
+        scene.world.add(cube!);
+        cube!.rotation.x=180;
+        scene.world.add(dragonPlane!);
+        scene.world.add(w!);
     }
-    scene.world.add(_cube!);
-    _cube!.rotation.x=180;
-     scene.world.add(_dragon_plane!);
-     scene.world.add(_w!);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(duration: Duration(milliseconds: 30000), vsync: this)
-      ..addListener(() {
-        if (_cube != null) {
-          _cube!.rotation.y = _controller.value * 360;
-          _cube!.updateTransform();
-          _scene.update();
+    
+    void listener() {
+        if (cube != null) {
+            cube!.rotation.y = controller.value * 360;
+            cube!.updateTransform();
+            scene.update();
         }
-        _dragon_plane!.rotation.x = _controller.value * 360;
-        _dragon_plane!.updateTransform();
-      })
-      ..repeat();
-  }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+        dragonPlane!.rotation.x = controller.value * 360;
+        dragonPlane!.updateTransform();
+    }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title!),
-      ),
-      body: Center(
-        child: Cube(
-          onSceneCreated: _onSceneCreated,
-        ),
-      ),
-    );
-  }
+    @override
+    void initState() {
+        super.initState();
+        controller = AnimationController(duration: Duration(milliseconds: 30000), vsync: this)
+            ..addListener(listener)
+            ..repeat();
+    }
+
+    @override
+    void dispose() {
+        controller.dispose();
+        super.dispose();
+    }
+
+    @override
+    Widget build(BuildContext context) {
+        return Scaffold(
+            appBar: AppBar(
+                title: Text(widget.title),
+                centerTitle: true
+            ),
+            body: Center(
+                child: Cube(
+                    onSceneCreated: _onSceneCreated,
+                ),
+            ),
+        );
+    }
 }
