@@ -58,8 +58,7 @@ class MeasureState extends State<Measure> {
         return "Dziwne";
     }
 
-    void _showAddMeasurementDialog() {
-        // Zakładamy, że AddMeasurementDialog jest zdefiniowany w currentDate.dart lub osobnym pliku
+    void showAddMeasurementDialog() {
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -70,6 +69,74 @@ class MeasureState extends State<Measure> {
                             _titleFuture = checkMeasurements(widget.userID);
                         });
                     },
+                );
+            },
+        );
+    }
+
+    void showErrorSnackBar(String message) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text(message),
+                backgroundColor: Colors.red,
+            ),
+        );
+    }
+
+    void askBackendForRemoval(Map<String, dynamic> measurement) async {
+        final url = Uri.parse('http://57.131.197.202:28415/deleteRecord');
+        
+        try {
+            final response = await http.delete(
+                url,
+                headers: <String, String>{
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: jsonEncode(<String, dynamic>{
+                    'userID': widget.userID,
+                    'date': measurement['date'],
+                }),
+            ).timeout(const Duration(seconds: 5));
+
+            if (response.statusCode != 200) {
+                showErrorSnackBar('Błąd połączenia z serwerem 2');
+            }
+            else {
+                if (mounted) {
+                    setState(() {
+                        _titleFuture = checkMeasurements(widget.userID);
+                    });
+                    Navigator.pop(context);
+                }
+            }
+        }
+        catch (e) {
+            showErrorSnackBar('Błąd połączenia z serwerem 1');
+        }
+    }
+
+    void removeRecord(Map<String, dynamic> measurement) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+                return AlertDialog(
+                    title: Text('Czy chcesz usunąć rekord ${measurement['date']}?'),
+                    actions: [
+                        TextButton(
+                            onPressed: () {
+                                Navigator.pop(context);
+                            },
+                            child: const Text('Anuluj'),
+                        ),
+                        FilledButton(
+                            onPressed: () {
+                                askBackendForRemoval(measurement);
+                            },
+                            child: const Text('Tak!'),
+                        ),
+                    ],
                 );
             },
         );
@@ -125,15 +192,18 @@ class MeasureState extends State<Measure> {
                                 styledHeader('vFat'),
                             ],
                             rows: data.map((measurement) {
-                                return DataRow(cells: [
-                                    alignedCell(measurement['date']!),
-                                    alignedCell('${measurement['weight']!} kg'),
-                                    alignedCell(measurement['bmi']!),
-                                    alignedCell('${measurement['fat']!} %'),
-                                    alignedCell('${measurement['muscle']!} %'),
-                                    alignedCell(measurement['rm']!),
-                                    alignedCell(measurement['vFat']!),
-                                ]);
+                                return DataRow(
+                                    cells: [
+                                        alignedCell(measurement['date']!),
+                                        alignedCell('${measurement['weight']!} kg'),
+                                        alignedCell(measurement['bmi']!),
+                                        alignedCell('${measurement['fat']!} %'),
+                                        alignedCell('${measurement['muscle']!} %'),
+                                        alignedCell(measurement['rm']!),
+                                        alignedCell(measurement['vFat']!),
+                                    ],
+                                    onLongPress: () => removeRecord(measurement)
+                                );
                             }).toList(),
                         ),
                     ),
@@ -172,7 +242,7 @@ class MeasureState extends State<Measure> {
                                         width: double.infinity,
                                         height: 50,
                                         child: FilledButton(
-                                            onPressed: _showAddMeasurementDialog,
+                                            onPressed: showAddMeasurementDialog,
                                             child: const Text('Dodaj nowy pomiar', style: TextStyle(fontSize: 16)),
                                         ),
                                     ),

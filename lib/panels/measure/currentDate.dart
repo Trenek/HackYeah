@@ -50,8 +50,13 @@ class AddMeasurementDialogState extends State<AddMeasurementDialog> {
         );
     }
     void onPressed() async {
-        String wartosc = weightController.text;
-        if (wartosc.isNotEmpty) {
+        if (dateController.text.isNotEmpty &&
+            weightController.text.isNotEmpty &&
+            bmiController.text.isNotEmpty &&
+            fatController.text.isNotEmpty &&
+            muscleController.text.isNotEmpty &&
+            rmController.text.isNotEmpty &&
+            vFatController.text.isNotEmpty) {
             final url = Uri.parse('http://57.131.197.202:28415/recordMeasure');
             
             try {
