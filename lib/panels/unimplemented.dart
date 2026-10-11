@@ -21,14 +21,14 @@ class _UnimplementedState extends State<Unimplemented> with SingleTickerProvider
     void _onSceneCreated(Scene scene) {
         this.scene = scene;
         scene.camera.position.z = 50;
-        scene.camera.fov=75;
+        scene.camera.fov = 75;
         cube = Object(scale: Vector3(2.0, 2.0, 2.0), backfaceCulling: false);
         dragonPlane = Object(scale: Vector3(50.0, 50.0, 0.01),fileName: 'assets/cube.obj');
 
         w = Object(position: Vector3(0.0, -24.0, 0.0),scale: Vector3(30.0, 3.0, 30.0),fileName: 'assets/w.obj');
 
         scene.world.add(cube!);
-        cube!.rotation.x=180;
+        cube!.rotation.x = 180;
         scene.world.add(dragonPlane!);
         scene.world.add(w!);
     }

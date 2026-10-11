@@ -4,6 +4,7 @@ import './login.dart';
 
 import './panels/unimplemented.dart';
 import './panels/home.dart';
+import './panels/measure/measure.dart';
 
 void main() {
     runApp(const MyApp());
@@ -61,10 +62,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                     ),
                 ),
-                body: const TabBarView(
+                body: TabBarView(
                     children: [
                         Home(),
-                        Unimplemented(a:1),
+                        Measure(userID: widget.userID),
                         Unimplemented(a:1),
                     ],
                 ),
