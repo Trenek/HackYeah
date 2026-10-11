@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart'; 
 
 import './login.dart';
 
@@ -23,6 +24,16 @@ class MyApp extends StatelessWidget {
             home: LoginScreen(
                 targetScreen: builder
             ),
+
+            localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate
+            ],
+            supportedLocales: const [
+                Locale('pl', 'PL')
+            ],
+            locale: const Locale('pl', 'PL'),
         );
     }
 
